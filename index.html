@@ -32,6 +32,8 @@
   button.primary{background:var(--accent); color:#fff; border-color:var(--accent);}
   button.primary:hover{background:#4338ca;}
   button.ghost{border:none; background:transparent; padding:4px 6px;}
+  button.danger{color:var(--red);}
+  button.danger:hover{background:var(--red-bg);}
   .summary{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;}
   .chip{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:13px; min-width:110px;}
   .chip b{display:block; font-size:20px; margin-bottom:2px;}
@@ -40,16 +42,26 @@
   .form-grid{display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;}
   .form-grid input, .form-grid select{font:inherit; padding:8px 10px; border:1px solid var(--border); border-radius:8px; width:100%; background:#fff; color:var(--ink);}
   .form-row2{display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; margin-top:8px;}
-  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
   .filters input[type=text]{flex:1; min-width:160px; font:inherit; padding:7px 10px; border:1px solid var(--border); border-radius:8px; background:#fff;}
   .filter-btn{padding:6px 12px; border-radius:999px; font-size:13px;}
   .filter-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .project-filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center;}
+  .project-filters .label{font-size:12px; color:var(--muted); font-weight:600; margin-right:2px;}
+  .project-chip{padding:5px 12px; border-radius:999px; font-size:12.5px; border:1px solid var(--border); background:#fff; cursor:pointer; color:var(--ink);}
+  .project-chip.active{background:#1f2430; color:#fff; border-color:#1f2430;}
+  .project-chip .count{opacity:.65; margin-left:3px;}
+  .group-toggle{margin-left:auto;}
+  .group-toggle.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .group-header{display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; margin:20px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border);}
+  .group-header:first-child{margin-top:0;}
+  .group-header .count{background:var(--border); color:var(--ink); border-radius:999px; padding:1px 8px; font-size:11px; text-transform:none; letter-spacing:0; font-weight:600;}
   .task{display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:8px;}
   .task.done{opacity:.55;}
   .task.overdue{border-left:4px solid var(--red);}
   .task.today{border-left:4px solid var(--orange);}
   .task input[type=checkbox]{width:18px; height:18px; margin-top:2px; cursor:pointer; flex-shrink:0;}
-  .task-body{flex:1; min-width:0;}
+  .task-body{flex:1; min-width:0; cursor:pointer;}
   .task-title{font-size:14.5px; font-weight:500; word-break:break-word;}
   .task.done .task-title{text-decoration:line-through;}
   .task-meta{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
@@ -61,10 +73,39 @@
   .tag.prio-basse{background:var(--green-bg); color:var(--green);}
   .tag.date{background:#f3f4f6; color:#374151;}
   .tag.recur{background:#f3f4f6; color:#374151;}
+  .tag.project{background:#fce7f3; color:#be185d;}
+  .tag.docs{background:#e0f2fe; color:#0369a1;}
   .task-actions{display:flex; gap:2px; flex-shrink:0;}
   .empty{color:var(--muted); font-size:13px; text-align:center; padding:30px 0;}
   footer{color:var(--muted); font-size:12px; text-align:center; margin-top:30px;}
   @media (max-width:640px){ .form-grid{grid-template-columns:1fr;} .form-row2{grid-template-columns:1fr 1fr;} }
+
+  /* Modal (fiche ticket) */
+  .modal-overlay{position:fixed; inset:0; background:rgba(15,18,25,.45); display:flex; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto; z-index:50;}
+  .modal-overlay.hidden{display:none;}
+  .modal{background:#fff; border-radius:14px; max-width:640px; width:100%; padding:22px; box-shadow:0 20px 60px rgba(0,0,0,.25);}
+  .modal-header{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .modal-header h2{font-size:18px; margin:0; word-break:break-word;}
+  .modal-close{border:none; background:transparent; font-size:18px; padding:2px 8px; cursor:pointer; color:var(--muted); flex-shrink:0;}
+  .modal-sub{color:var(--muted); font-size:12px; margin:2px 0 0;}
+  .modal-section{margin-top:20px; padding-top:16px; border-top:1px solid var(--border);}
+  .modal-section h3{font-size:12.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin:0 0 10px;}
+  .modal-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .modal-grid input, .modal-grid select{font:inherit; padding:8px 10px; border:1px solid var(--border); border-radius:8px; width:100%;}
+  .modal-grid .full{grid-column:1/-1;}
+  .modal-actions{display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:8px;}
+  .doc-item{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; font-size:13px;}
+  .doc-item a{color:var(--accent); text-decoration:none; font-weight:600; word-break:break-all;}
+  .doc-item a:hover{text-decoration:underline;}
+  .doc-add-row{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
+  .doc-add-row input{flex:1; min-width:120px; font:inherit; padding:7px 9px; border:1px solid var(--border); border-radius:8px;}
+  .empty-mini{color:var(--muted); font-size:12.5px; padding:4px 0;}
+  .timeline{display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto; padding-right:4px;}
+  .timeline-item{font-size:13px; padding:8px 10px; border-radius:8px; background:#f9fafb; border:1px solid var(--border);}
+  .timeline-item.comment{background:var(--accent-light); border-color:#c7d2fe;}
+  .timeline-item .meta{color:var(--muted); font-size:11px; margin-top:3px;}
+  .comment-add{display:flex; gap:6px; margin-top:10px;}
+  .comment-add textarea{flex:1; font:inherit; padding:8px 10px; border:1px solid var(--border); border-radius:8px; resize:vertical; min-height:38px;}
 </style>
 </head>
 <body>
@@ -86,7 +127,8 @@
         <option value="perso">Perso</option>
         <option value="pro">Pro</option>
       </select>
-      <input type="text" id="inpProject" placeholder="Projet (optionnel)">
+      <input type="text" id="inpProject" placeholder="Projet (optionnel, ex: Site vitrine)" list="projectSuggestions">
+      <datalist id="projectSuggestions"></datalist>
     </div>
     <div class="form-row2">
       <select id="inpPriority">
@@ -116,9 +158,18 @@
     <input type="text" id="search" placeholder="Rechercher…">
   </div>
 
+  <div class="project-filters" id="projectFilters">
+    <!-- généré dynamiquement : un projet = une nouvelle variable de filtre/regroupement -->
+  </div>
+
   <div id="taskList"></div>
 
   <footer>Synchronisé via Firebase — accessible depuis tous tes appareils.</footer>
+</div>
+
+<!-- Fiche détaillée du ticket (modal) -->
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal" id="modalPanel"></div>
 </div>
 
 <!-- Firebase SDK -->
@@ -141,6 +192,14 @@ const tasksRef = db.collection('tasks');
 
 let tasks = [];
 let currentFilter = 'all';
+let currentProject = 'all';
+let groupByProject = false;
+let openTaskId = null;
+
+const PRIORITY_LABELS = {haute:'Priorité haute', moyenne:'Priorité moyenne', basse:'Priorité basse'};
+const TYPE_LABELS = {perso:'Perso', pro:'Pro'};
+const RECUR_LABELS = {none:'Ne se répète pas', daily:'Tous les jours', weekly:'Toutes les semaines', monthly:'Tous les mois'};
+const FIELD_LABELS = {title:'Titre', type:'Catégorie', project:'Projet', priority:'Priorité', dueDate:'Échéance', recur:'Récurrence', done:'Statut'};
 
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function addDays(dateStr, n){ const d = new Date(dateStr + 'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
@@ -152,11 +211,29 @@ function nextRecurrenceDate(dateStr, recur){
   if(recur === 'monthly') return addMonths(dateStr, 1);
   return null;
 }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+function fmtDateTime(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric'}) + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+}
+function normalizeUrl(u){
+  u = u.trim();
+  if(!u) return '';
+  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  return u;
+}
 
 // Real-time listener
 tasksRef.onSnapshot(snapshot => {
   tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   render();
+  if(openTaskId){
+    const t = tasks.find(x => x.id === openTaskId);
+    if(t) renderModal(t); else closeModal();
+  }
   setStatus(true);
 }, err => {
   console.error(err);
@@ -172,6 +249,7 @@ function setStatus(online){
 function addTask(){
   const title = document.getElementById('inpTitle').value.trim();
   if(!title){ document.getElementById('inpTitle').focus(); return; }
+  const now = new Date().toISOString();
   const task = {
     title,
     type: document.getElementById('inpType').value,
@@ -180,7 +258,9 @@ function addTask(){
     dueDate: document.getElementById('inpDate').value || '',
     recur: document.getElementById('inpRecur').value,
     done: false,
-    createdAt: new Date().toISOString()
+    createdAt: now,
+    updates: [{ id: uid(), kind:'history', field:'Création', from:'', to:'Ticket créé', at: now }],
+    docs: []
   };
   tasksRef.add(task);
   document.getElementById('inpTitle').value = '';
@@ -189,37 +269,43 @@ function addTask(){
   document.getElementById('inpTitle').focus();
 }
 
-function toggleDone(id){
+function toggleDone(id, evt){
+  if(evt) evt.stopPropagation();
   const t = tasks.find(x => x.id === id);
   if(!t) return;
   const newDone = !t.done;
-  tasksRef.doc(id).update({ done: newDone });
+  const now = new Date().toISOString();
+  const hist = { id: uid(), kind:'history', field: FIELD_LABELS.done, from: t.done ? 'Terminée' : 'À faire', to: newDone ? 'Terminée' : 'À faire', at: now };
+  tasksRef.doc(id).update({ done: newDone, updates: firebase.firestore.FieldValue.arrayUnion(hist) });
   if(newDone && t.recur && t.recur !== 'none'){
     const nextDate = nextRecurrenceDate(t.dueDate, t.recur);
     tasksRef.add({
       title: t.title, type: t.type, project: t.project || '',
       priority: t.priority, dueDate: nextDate, recur: t.recur,
-      done: false, createdAt: new Date().toISOString()
+      done: false, createdAt: now,
+      updates: [{ id: uid(), kind:'history', field:'Création', from:'', to:'Occurrence suivante générée automatiquement', at: now }],
+      docs: []
     });
   }
 }
 
-function deleteTask(id){ tasksRef.doc(id).delete(); }
-
-function editTask(id){
-  const t = tasks.find(x => x.id === id);
-  if(!t) return;
-  const newTitle = prompt('Modifier la tâche :', t.title);
-  if(newTitle === null) return;
-  tasksRef.doc(id).update({ title: newTitle.trim() || t.title });
+function deleteTask(id, evt){
+  if(evt) evt.stopPropagation();
+  if(!confirm('Supprimer définitivement cette tâche ?')) return;
+  tasksRef.doc(id).delete();
+  if(openTaskId === id) closeModal();
 }
 
 function priorityRank(p){ return p === 'haute' ? 0 : p === 'moyenne' ? 1 : 2; }
 
-function matchesFilter(t){
+function getProjectList(){
+  const set = new Set();
+  tasks.forEach(t => { if(t.project && t.project.trim()) set.add(t.project.trim()); });
+  return Array.from(set).sort((a,b) => a.localeCompare(b, 'fr'));
+}
+
+function matchesStatusFilter(t){
   const today = todayStr();
-  const search = document.getElementById('search').value.trim().toLowerCase();
-  if(search && !(t.title.toLowerCase().includes(search) || (t.project||'').toLowerCase().includes(search))) return false;
   switch(currentFilter){
     case 'today': return !t.done && t.dueDate === today;
     case 'overdue': return !t.done && t.dueDate && t.dueDate < today;
@@ -231,57 +317,115 @@ function matchesFilter(t){
   }
 }
 
-function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function matchesFilter(t){
+  const search = document.getElementById('search').value.trim().toLowerCase();
+  if(search && !(t.title.toLowerCase().includes(search) || (t.project||'').toLowerCase().includes(search))) return false;
+  if(currentProject !== 'all' && (t.project||'').trim() !== currentProject) return false;
+  return matchesStatusFilter(t);
+}
 
-function render(){
-  const today = todayStr();
-  const list = document.getElementById('taskList');
-  const filtered = tasks.filter(matchesFilter).sort((a,b) => {
+function sortTasks(list){
+  return list.slice().sort((a,b) => {
     if((a.dueDate||'') !== (b.dueDate||'')) return (a.dueDate||'9999') > (b.dueDate||'9999') ? 1 : -1;
     return priorityRank(a.priority) - priorityRank(b.priority);
   });
+}
+
+function taskCardHtml(t){
+  const today = todayStr();
+  let cls = 'task';
+  if(t.done) cls += ' done';
+  else if(t.dueDate && t.dueDate < today) cls += ' overdue';
+  else if(t.dueDate === today) cls += ' today';
+
+  let dateLabel = '';
+  if(t.dueDate){
+    if(t.dueDate < today && !t.done) dateLabel = '⚠ ' + t.dueDate + ' (en retard)';
+    else if(t.dueDate === today) dateLabel = "📅 Aujourd'hui";
+    else dateLabel = '📅 ' + t.dueDate;
+  }
+  const recurLabels = {daily:'🔁 Quotidien', weekly:'🔁 Hebdo', monthly:'🔁 Mensuel'};
+  const docCount = (t.docs || []).length;
+
+  return `
+    <div class="${cls}" data-id="${t.id}">
+      <input type="checkbox" ${t.done ? 'checked' : ''} onclick="toggleDone('${t.id}', event)">
+      <div class="task-body" onclick="openTask('${t.id}')">
+        <div class="task-title">${escapeHtml(t.title)}</div>
+        <div class="task-meta">
+          <span class="tag ${t.type}">${TYPE_LABELS[t.type] || t.type}</span>
+          <span class="tag prio-${t.priority}">${t.priority}</span>
+          ${t.project ? `<span class="tag project">📁 ${escapeHtml(t.project)}</span>` : ''}
+          ${dateLabel ? `<span class="tag date">${dateLabel}</span>` : ''}
+          ${t.recur && t.recur !== 'none' ? `<span class="tag recur">${recurLabels[t.recur]}</span>` : ''}
+          ${docCount > 0 ? `<span class="tag docs">📎 ${docCount} doc${docCount > 1 ? 's' : ''}</span>` : ''}
+        </div>
+      </div>
+      <div class="task-actions">
+        <button class="ghost" title="Ouvrir la fiche" onclick="openTask('${t.id}')">🔎</button>
+        <button class="ghost danger" title="Supprimer" onclick="deleteTask('${t.id}', event)">🗑️</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderProjectFilters(){
+  const wrap = document.getElementById('projectFilters');
+  const projects = getProjectList();
+  const statusFiltered = tasks.filter(matchesStatusFilter);
+  const countFor = (p) => statusFiltered.filter(t => (p === 'all') ? true : (t.project||'').trim() === p).length;
+
+  if(projects.length === 0){
+    wrap.innerHTML = '';
+    return;
+  }
+
+  let html = `<span class="label">Projets :</span>`;
+  html += `<button class="project-chip ${currentProject === 'all' ? 'active' : ''}" onclick="setProjectFilter('all')">Tous <span class="count">${countFor('all')}</span></button>`;
+  projects.forEach(p => {
+    html += `<button class="project-chip ${currentProject === p ? 'active' : ''}" onclick="setProjectFilter('${p.replace(/'/g, "\\'")}')">📁 ${escapeHtml(p)} <span class="count">${countFor(p)}</span></button>`;
+  });
+  html += `<button class="filter-btn group-toggle ${groupByProject ? 'active' : ''}" onclick="toggleGroupByProject()">${groupByProject ? '☑' : '☐'} Grouper par projet</button>`;
+  wrap.innerHTML = html;
+
+  // datalist for the add-task form
+  const datalist = document.getElementById('projectSuggestions');
+  datalist.innerHTML = projects.map(p => `<option value="${escapeHtml(p)}">`).join('');
+}
+
+function setProjectFilter(p){ currentProject = p; render(); }
+function toggleGroupByProject(){ groupByProject = !groupByProject; render(); }
+
+function render(){
+  const list = document.getElementById('taskList');
+  const filtered = tasks.filter(matchesFilter);
 
   list.innerHTML = '';
   if(filtered.length === 0){
     list.innerHTML = '<div class="empty">Aucune tâche ici. 🎉</div>';
-  } else {
+  } else if(groupByProject){
+    const groups = {};
     filtered.forEach(t => {
-      const div = document.createElement('div');
-      let cls = 'task';
-      if(t.done) cls += ' done';
-      else if(t.dueDate && t.dueDate < today) cls += ' overdue';
-      else if(t.dueDate === today) cls += ' today';
-      div.className = cls;
-
-      let dateLabel = '';
-      if(t.dueDate){
-        if(t.dueDate < today && !t.done) dateLabel = '⚠ ' + t.dueDate + ' (en retard)';
-        else if(t.dueDate === today) dateLabel = "📅 Aujourd'hui";
-        else dateLabel = '📅 ' + t.dueDate;
-      }
-      const recurLabels = {daily:'🔁 Quotidien', weekly:'🔁 Hebdo', monthly:'🔁 Mensuel'};
-
-      div.innerHTML = `
-        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleDone('${t.id}')">
-        <div class="task-body">
-          <div class="task-title">${escapeHtml(t.title)}</div>
-          <div class="task-meta">
-            <span class="tag ${t.type}">${t.type === 'perso' ? 'Perso' : 'Pro'}</span>
-            <span class="tag prio-${t.priority}">${t.priority}</span>
-            ${t.project ? `<span class="tag date">${escapeHtml(t.project)}</span>` : ''}
-            ${dateLabel ? `<span class="tag date">${dateLabel}</span>` : ''}
-            ${t.recur && t.recur !== 'none' ? `<span class="tag recur">${recurLabels[t.recur]}</span>` : ''}
-          </div>
-        </div>
-        <div class="task-actions">
-          <button class="ghost" title="Modifier" onclick="editTask('${t.id}')">✏️</button>
-          <button class="ghost" title="Supprimer" onclick="deleteTask('${t.id}')">🗑️</button>
-        </div>
-      `;
-      list.appendChild(div);
+      const key = (t.project && t.project.trim()) ? t.project.trim() : 'Sans projet';
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(t);
     });
+    const keys = Object.keys(groups).sort((a,b) => {
+      if(a === 'Sans projet') return 1;
+      if(b === 'Sans projet') return -1;
+      return a.localeCompare(b, 'fr');
+    });
+    keys.forEach(key => {
+      const items = sortTasks(groups[key]);
+      list.innerHTML += `<div class="group-header">📁 ${escapeHtml(key)} <span class="count">${items.length}</span></div>`;
+      list.innerHTML += items.map(taskCardHtml).join('');
+    });
+  } else {
+    list.innerHTML = sortTasks(filtered).map(taskCardHtml).join('');
   }
+
   renderSummary();
+  renderProjectFilters();
 }
 
 function renderSummary(){
@@ -298,9 +442,193 @@ function renderSummary(){
   `;
 }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
+/* ---------- Fiche détaillée du ticket (modal) ---------- */
+
+function openTask(id){
+  const t = tasks.find(x => x.id === id);
+  if(!t) return;
+  openTaskId = id;
+  renderModal(t);
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+function closeModal(){
+  openTaskId = null;
+  document.getElementById('modalOverlay').classList.add('hidden');
+  document.getElementById('modalPanel').innerHTML = '';
+}
+
+function renderModal(t){
+  const panel = document.getElementById('modalPanel');
+  const docs = t.docs || [];
+  const updates = (t.updates || []).slice().sort((a,b) => (a.at < b.at ? 1 : -1));
+
+  const timelineHtml = updates.length === 0
+    ? '<div class="empty-mini">Aucune activité pour le moment.</div>'
+    : updates.map(u => {
+        if(u.kind === 'comment'){
+          return `<div class="timeline-item comment">💬 ${escapeHtml(u.text)}<div class="meta">${fmtDateTime(u.at)}</div></div>`;
+        }
+        return `<div class="timeline-item">🕒 <b>${escapeHtml(u.field)}</b> : ${escapeHtml(u.from) || '—'} → ${escapeHtml(u.to) || '—'}<div class="meta">${fmtDateTime(u.at)}</div></div>`;
+      }).join('');
+
+  const docsHtml = docs.length === 0
+    ? '<div class="empty-mini">Aucun document lié pour le moment.</div>'
+    : docs.map(d => `
+        <div class="doc-item">
+          <a href="${escapeHtml(d.url)}" target="_blank" rel="noopener noreferrer">🔗 ${escapeHtml(d.label || d.url)}</a>
+          <button class="ghost danger" title="Retirer" onclick="removeDocLink('${t.id}', '${d.id}')">✕</button>
+        </div>
+      `).join('');
+
+  panel.innerHTML = `
+    <div class="modal-header">
+      <div>
+        <h2>${escapeHtml(t.title)}</h2>
+        <p class="modal-sub">Créé le ${fmtDateTime(t.createdAt)}</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-section">
+      <h3>Détails du ticket</h3>
+      <div class="modal-grid">
+        <input type="text" id="mTitle" class="full" value="${escapeHtml(t.title)}" placeholder="Titre">
+        <select id="mType">
+          <option value="perso" ${t.type === 'perso' ? 'selected' : ''}>Perso</option>
+          <option value="pro" ${t.type === 'pro' ? 'selected' : ''}>Pro</option>
+        </select>
+        <input type="text" id="mProject" value="${escapeHtml(t.project || '')}" placeholder="Projet" list="projectSuggestions">
+        <select id="mPriority">
+          <option value="haute" ${t.priority === 'haute' ? 'selected' : ''}>Priorité haute</option>
+          <option value="moyenne" ${t.priority === 'moyenne' ? 'selected' : ''}>Priorité moyenne</option>
+          <option value="basse" ${t.priority === 'basse' ? 'selected' : ''}>Priorité basse</option>
+        </select>
+        <input type="date" id="mDate" value="${t.dueDate || ''}">
+        <select id="mRecur">
+          <option value="none" ${t.recur === 'none' || !t.recur ? 'selected' : ''}>Ne se répète pas</option>
+          <option value="daily" ${t.recur === 'daily' ? 'selected' : ''}>Tous les jours</option>
+          <option value="weekly" ${t.recur === 'weekly' ? 'selected' : ''}>Toutes les semaines</option>
+          <option value="monthly" ${t.recur === 'monthly' ? 'selected' : ''}>Tous les mois</option>
+        </select>
+        <select id="mDone">
+          <option value="false" ${!t.done ? 'selected' : ''}>À faire</option>
+          <option value="true" ${t.done ? 'selected' : ''}>Terminée</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="ghost danger" onclick="deleteTask('${t.id}')">🗑️ Supprimer le ticket</button>
+        <button class="primary" onclick="saveTaskEdits('${t.id}')">Enregistrer les modifications</button>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>📎 Documentation (liens)</h3>
+      <div id="docsList">${docsHtml}</div>
+      <div class="doc-add-row">
+        <input type="text" id="mDocLabel" placeholder="Nom du document (ex: Cahier des charges)">
+        <input type="text" id="mDocUrl" placeholder="Lien (Google Drive, Notion, Dropbox…)">
+        <button onclick="addDocLink('${t.id}')">+ Ajouter</button>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>🕒 Suivi &amp; commentaires</h3>
+      <div class="timeline">${timelineHtml}</div>
+      <div class="comment-add">
+        <textarea id="mComment" placeholder="Ajouter une note de suivi…"></textarea>
+        <button class="primary" onclick="addComment('${t.id}')">Ajouter</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveTaskEdits(id){
+  const t = tasks.find(x => x.id === id);
+  if(!t) return;
+  const now = new Date().toISOString();
+
+  const newVals = {
+    title: document.getElementById('mTitle').value.trim() || t.title,
+    type: document.getElementById('mType').value,
+    project: document.getElementById('mProject').value.trim(),
+    priority: document.getElementById('mPriority').value,
+    dueDate: document.getElementById('mDate').value || '',
+    recur: document.getElementById('mRecur').value,
+    done: document.getElementById('mDone').value === 'true'
+  };
+
+  const changed = {};
+  const historyEntries = [];
+  Object.keys(newVals).forEach(key => {
+    const oldV = t[key] === undefined || t[key] === null ? '' : t[key];
+    const newV = newVals[key];
+    if(String(oldV) !== String(newV)){
+      changed[key] = newV;
+      let fromLabel = oldV, toLabel = newV;
+      if(key === 'type'){ fromLabel = TYPE_LABELS[oldV] || oldV; toLabel = TYPE_LABELS[newV] || newV; }
+      if(key === 'recur'){ fromLabel = RECUR_LABELS[oldV] || oldV || '—'; toLabel = RECUR_LABELS[newV] || newV; }
+      if(key === 'done'){ fromLabel = oldV ? 'Terminée' : 'À faire'; toLabel = newV ? 'Terminée' : 'À faire'; }
+      historyEntries.push({ id: uid(), kind:'history', field: FIELD_LABELS[key] || key, from: fromLabel === '' ? '—' : String(fromLabel), to: toLabel === '' ? '—' : String(toLabel), at: now });
+    }
+  });
+
+  if(Object.keys(changed).length === 0){ closeModal(); return; }
+
+  const wasRecurringDone = !t.done && changed.done === true && t.recur && t.recur !== 'none';
+  changed.updates = firebase.firestore.FieldValue.arrayUnion(...historyEntries);
+
+  tasksRef.doc(id).update(changed).then(() => {
+    if(wasRecurringDone){
+      const nextDate = nextRecurrenceDate(newVals.dueDate || t.dueDate, t.recur);
+      tasksRef.add({
+        title: newVals.title, type: newVals.type, project: newVals.project || '',
+        priority: newVals.priority, dueDate: nextDate, recur: t.recur,
+        done: false, createdAt: now,
+        updates: [{ id: uid(), kind:'history', field:'Création', from:'', to:'Occurrence suivante générée automatiquement', at: now }],
+        docs: []
+      });
+    }
+  });
+  closeModal();
+}
+
+function addComment(id){
+  const el = document.getElementById('mComment');
+  const text = el.value.trim();
+  if(!text) return;
+  const now = new Date().toISOString();
+  tasksRef.doc(id).update({
+    updates: firebase.firestore.FieldValue.arrayUnion({ id: uid(), kind:'comment', text, at: now })
+  });
+  el.value = '';
+}
+
+function addDocLink(id){
+  const labelEl = document.getElementById('mDocLabel');
+  const urlEl = document.getElementById('mDocUrl');
+  const url = normalizeUrl(urlEl.value);
+  if(!url){ urlEl.focus(); return; }
+  const label = labelEl.value.trim();
+  const now = new Date().toISOString();
+  tasksRef.doc(id).update({
+    docs: firebase.firestore.FieldValue.arrayUnion({ id: uid(), label, url, addedAt: now }),
+    updates: firebase.firestore.FieldValue.arrayUnion({ id: uid(), kind:'history', field:'Documentation', from:'', to:'Document ajouté : ' + (label || url), at: now })
+  });
+  labelEl.value = '';
+  urlEl.value = '';
+}
+
+function removeDocLink(id, docId){
+  const t = tasks.find(x => x.id === id);
+  if(!t) return;
+  const remaining = (t.docs || []).filter(d => d.id !== docId);
+  tasksRef.doc(id).update({ docs: remaining });
+}
+
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFilter = btn.dataset.filter;
     render();
@@ -309,6 +637,8 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('btnAdd').addEventListener('click', addTask);
 document.getElementById('inpTitle').addEventListener('keydown', e => { if(e.key === 'Enter') addTask(); });
+document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target.id === 'modalOverlay') closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && openTaskId) closeModal(); });
 </script>
 </body>
 </html>
